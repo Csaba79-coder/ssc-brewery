@@ -3,6 +3,7 @@ package guru.sfg.brewery.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,6 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
     }
 
+    /*
+    instead of this one, much nicer solution bellow!!!
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
@@ -49,5 +52,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .build();
 
         return new InMemoryUserDetailsManager(admin, user);
+    }
+    */
+
+    // Fluent API bellow:
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("spring")
+                .password("{noop}guru") // with {noop} I solve PasswordEncoder problem, that says mapped for id "null" as a failure message!
+                .roles("ADMIN")
+                .and()
+                .withUser("user")
+                .password("{noop}password") // using {noop} here as well!
+                .roles("USER");
     }
 }
