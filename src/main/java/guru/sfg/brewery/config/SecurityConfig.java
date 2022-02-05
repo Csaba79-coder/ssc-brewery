@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("ADMIN")
                 .and()
                 .withUser("user")
-                .password("{noop}password") // using {noop} here as well!
+                .password("{noop}password") // using {noop} here as well! now it stores just as a text (we correct it later! - wrong solution)
                 .roles("USER");
     }
 }
