@@ -51,8 +51,9 @@ public class BeerControllerIT {
                 .build();
     }
 
-    @WithMockUser("spring")
+    @WithMockUser("spring") // this one pass with any String written behind! (not going through the authentication manager!)
     @Test
+    // testing security logic only!
     void findBeers() throws Exception{
         mockMvc.perform(get("/beers/find"))
                 .andExpect(status().isOk())
@@ -61,8 +62,10 @@ public class BeerControllerIT {
     }
 
     @Test
+    // this is going through the authentication manager!
+    // testing both logic (security and authentication)!
     void findBeersWithHttpBasic() throws Exception{
-        mockMvc.perform(get("/beers/find").with(httpBasic("spring", "guru")))
+        mockMvc.perform(get("/beers/find").with(httpBasic("spring", "guru"))) // here it must be the same as in app.prop.!
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/findBeers"))
                 .andExpect(model().attributeExists("beer"));
