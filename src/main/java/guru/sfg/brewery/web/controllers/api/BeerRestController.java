@@ -128,5 +128,4 @@ public class BeerRestController {
 
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-
 }
