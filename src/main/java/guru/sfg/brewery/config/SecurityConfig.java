@@ -65,6 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("user")
                 .password("{noop}password") // using {noop} here as well! now it stores just as a text (we correct it later! - wrong solution)
-                .roles("USER");
+                .roles("USER")
+                .and()
+                .withUser("scott")
+                .password("{noop}tiger")
+                .roles("CUSTOMER");
+        // these are two different way to do!
+        auth.inMemoryAuthentication().withUser("Csaba79-coder").password("{noop}csaba").roles("ADMIN");
     }
 }
