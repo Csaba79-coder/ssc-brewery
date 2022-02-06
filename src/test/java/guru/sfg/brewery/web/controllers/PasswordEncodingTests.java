@@ -3,6 +3,7 @@ package guru.sfg.brewery.web.controllers;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,5 +52,30 @@ public class PasswordEncodingTests {
         String encodedSHA256Password = sha256.encode(PASSWORD);
 
         assertTrue(sha256.matches(PASSWORD, encodedSHA256Password));
+    }
+
+    @Test
+    void testBCrypt() {
+        PasswordEncoder bCrypt = new BCryptPasswordEncoder();
+
+        System.out.println(bCrypt.encode(PASSWORD));
+        System.out.println(bCrypt.encode(PASSWORD));
+
+        String bCryptPassword = bCrypt.encode(PASSWORD);
+
+        assertTrue(bCrypt.matches(PASSWORD, bCryptPassword));
+    }
+
+    // strength of the hash is 16 here!
+    @Test
+    void testBCryptStrength() {
+        PasswordEncoder bCrypt = new BCryptPasswordEncoder(16); // if it is 12 comes back the result faster! if it is bigger takes longer!
+
+        System.out.println(bCrypt.encode(PASSWORD));
+        System.out.println(bCrypt.encode(PASSWORD));
+
+        String bCryptPassword = bCrypt.encode(PASSWORD);
+
+        assertTrue(bCrypt.matches(PASSWORD, bCryptPassword));
     }
 }
