@@ -3,6 +3,7 @@ package guru.sfg.brewery.config;
 import net.bytebuddy.asm.Advice;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -23,7 +25,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     // beacuse of this method, noop can be removed!
     PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+        // return NoOpPasswordEncoder.getInstance(); // using NoOp
+        return new LdapShaPasswordEncoder();
     }
 
     @Override
