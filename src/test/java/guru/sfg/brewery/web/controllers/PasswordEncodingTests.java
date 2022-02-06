@@ -4,7 +4,7 @@ package guru.sfg.brewery.web.controllers;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.DigestUtils;
 
-public class PasswordEncodingTest {
+public class PasswordEncodingTests {
 
     static final String PASSWORD = "password";
 
