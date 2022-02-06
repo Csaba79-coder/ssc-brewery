@@ -1,5 +1,6 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
 import net.bytebuddy.asm.Advice;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // return new SCryptPasswordEncoder(); // using for SHA-256
         // return new BCryptPasswordEncoder(); // using BCrypt
         // return new BCryptPasswordEncoder(16); // using BCrypt encoding strength of 16
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        // return PasswordEncoderFactories.createDelegatingPasswordEncoder(); // using for delegating password encoder
+        return SfgPasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
