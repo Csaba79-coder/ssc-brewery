@@ -79,6 +79,7 @@ public class BeerControllerIT {
                 .andExpect(model().attributeExists("beer"));
     }
 
+    @Disabled // because of delegate password encoder!
     // @Disabled // because of password encryption // it opeates the test if I change password in SecurityConfig!!! to the encrypted password!
     @Test
     void initCreationFormDisabled() throws Exception {
@@ -101,6 +102,30 @@ public class BeerControllerIT {
     @Test
     void initCreationFormWithMyself() throws Exception {
         mockMvc.perform(get("/beers/new").with(httpBasic("Csaba79-coder", "csaba")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/createBeer"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
+    void initCreationFormSpringAdminDelegateEncoding() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("spring", "guru")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/createBeer"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
+    void initCreationFormDisabledUserDelegateEncoding() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("user", "password")))
+                .andExpect(status().isOk())
+                .andExpect(view().name("beers/createBeer"))
+                .andExpect(model().attributeExists("beer"));
+    }
+
+    @Test
+    void initCreationFormWithScottDelegateEncoding() throws Exception {
+        mockMvc.perform(get("/beers/new").with(httpBasic("scott", "tiger")))
                 .andExpect(status().isOk())
                 .andExpect(view().name("beers/createBeer"))
                 .andExpect(model().attributeExists("beer"));

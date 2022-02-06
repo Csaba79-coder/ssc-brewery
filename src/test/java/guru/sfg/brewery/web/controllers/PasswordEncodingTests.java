@@ -2,7 +2,6 @@ package guru.sfg.brewery.web.controllers;
 
 
 import org.junit.jupiter.api.Test;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -36,6 +35,7 @@ public class PasswordEncodingTests {
         PasswordEncoder ldap = new LdapShaPasswordEncoder();
         System.out.println(ldap.encode(PASSWORD));
         System.out.println(ldap.encode(PASSWORD)); // this won't 'be the same as before!!! all output is different
+        System.out.println(ldap.encode("tiger"));
 
         String encodedPassword = ldap.encode(PASSWORD);
 
@@ -48,6 +48,7 @@ public class PasswordEncodingTests {
 
         System.out.println(sha256.encode(PASSWORD));
         System.out.println(sha256.encode(PASSWORD)); // always different values! but the same!
+        System.out.println(sha256.encode("password"));
 
         String encodedSHA256Password = sha256.encode(PASSWORD);
 
@@ -60,6 +61,7 @@ public class PasswordEncodingTests {
 
         System.out.println(bCrypt.encode(PASSWORD));
         System.out.println(bCrypt.encode(PASSWORD));
+        System.out.println(bCrypt.encode("guru"));
 
         String bCryptPassword = bCrypt.encode(PASSWORD);
 

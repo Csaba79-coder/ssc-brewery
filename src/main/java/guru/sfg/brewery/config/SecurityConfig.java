@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,8 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // return NoOpPasswordEncoder.getInstance(); // using NoOp
         // return new LdapShaPasswordEncoder(); // using for LDAP
         // return new SCryptPasswordEncoder(); // using for SHA-256
-        return new BCryptPasswordEncoder(); // using BCrypt
+        // return new BCryptPasswordEncoder(); // using BCrypt
         // return new BCryptPasswordEncoder(16); // using BCrypt encoding strength of 16
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -111,7 +113,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("Csaba79-coder").password("csaba").roles("ADMIN");
     }*/
 
-    @Override
+    /*@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
@@ -124,6 +126,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("scott")
                 .password("tiger")
+                .roles("CUSTOMER");
+        // these are two different way to do!
+        auth.inMemoryAuthentication().withUser("Csaba79-coder").password("csaba").roles("ADMIN");
+    }*/
+
+    @Override // for delegating password encoder
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("spring")
+                // BCrypt encoding
+                .password("{bcrypt}$2a$10$7tYAvVL2/KwcQTcQywHIleKueg4ZK7y7d44hKyngjTwHCDlesxdla") // with {noop} I solve PasswordEncoder problem, that says mapped for id "null" as a failure message!
+                .roles("ADMIN")
+                .and()
+                .withUser("user")
+                // SHA-256 encoding
+                .password("{sha256}4021d8f587f1eb17f8bf1edf3c0d4aa3f846d13e7469adbc197fc1f919df8b50735ac9b4da8f9239") // using {noop} here as well! now it stores just as a text (we correct it later! - wrong solution)
+                .roles("USER")
+                .and()
+                .withUser("scott")
+                // LDAP encoding
+                .password("{ldap}{SSHA}h+Zp3jU7PL0VHNDd+n4aPafxlL4pLYiaixNZjw==")
                 .roles("CUSTOMER");
         // these are two different way to do!
         auth.inMemoryAuthentication().withUser("Csaba79-coder").password("csaba").roles("ADMIN");
