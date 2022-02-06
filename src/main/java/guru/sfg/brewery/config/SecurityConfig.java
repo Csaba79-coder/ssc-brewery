@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,11 +25,13 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    // beacuse of this method, noop can be removed!
+    // because of this method, noop can be removed!
     PasswordEncoder passwordEncoder() {
         // return NoOpPasswordEncoder.getInstance(); // using NoOp
         // return new LdapShaPasswordEncoder(); // using for LDAP
-        return new SCryptPasswordEncoder(); // using for SHA-256
+        // return new SCryptPasswordEncoder(); // using for SHA-256
+        return new BCryptPasswordEncoder(); // using BCrypt
+        // return new BCryptPasswordEncoder(16); // using BCrypt encoding strength of 16
     }
 
     @Override
@@ -90,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     */
 
-    @Override
+    /* @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("spring")
@@ -99,6 +102,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .withUser("user")
                 .password("password") // using {noop} here as well! now it stores just as a text (we correct it later! - wrong solution)
+                .roles("USER")
+                .and()
+                .withUser("scott")
+                .password("tiger")
+                .roles("CUSTOMER");
+        // these are two different way to do!
+        auth.inMemoryAuthentication().withUser("Csaba79-coder").password("csaba").roles("ADMIN");
+    }*/
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("spring")
+                .password("guru") // with {noop} I solve PasswordEncoder problem, that says mapped for id "null" as a failure message!
+                .roles("ADMIN")
+                .and()
+                .withUser("user")
+                .password("$2a$10$4TgUFqVrjPGEbVJn1JZv5.hneRtyujEeb1qvy2IDoclfDJYpw/FqG") // using {noop} here as well! now it stores just as a text (we correct it later! - wrong solution)
                 .roles("USER")
                 .and()
                 .withUser("scott")
