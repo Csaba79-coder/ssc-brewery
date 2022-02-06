@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 
@@ -26,7 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // beacuse of this method, noop can be removed!
     PasswordEncoder passwordEncoder() {
         // return NoOpPasswordEncoder.getInstance(); // using NoOp
-        return new LdapShaPasswordEncoder();
+        // return new LdapShaPasswordEncoder(); // using for LDAP
+        return new SCryptPasswordEncoder(); // using for SHA-256
     }
 
     @Override
