@@ -1,8 +1,10 @@
 package guru.sfg.brewery.config;
 
+import guru.sfg.brewery.security.JpaUserDetailsService;
 import guru.sfg.brewery.security.RestHeaderAuthFilter;
 import guru.sfg.brewery.security.RestUrlAuthFilter;
 import guru.sfg.brewery.security.SfgPasswordEncoderFactories;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -175,6 +177,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().withUser("Csaba79-coder").password("csaba").roles("ADMIN");
     }*/
 
+    /* // Commented because of JPA!!!
     @Override // for delegating password encoder
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
@@ -194,5 +197,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles("CUSTOMER");
         // these are two different way to do!
         auth.inMemoryAuthentication().withUser("Csaba79-coder").password("csaba").roles("ADMIN");
+    }*/
+
+    /*
+    @Autowired
+    JpaUserDetailsService jpaUserDetailsService;
+
+    @Override
+
+        // if we have more than one UserDetailsService!
+        auth.userDetailsService(this.jpaUserDetailsService).passwordEncoder(passwordEncoder());
     }
+    */
 }
