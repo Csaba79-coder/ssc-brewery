@@ -200,6 +200,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }*/
 
     /*
+    // instead of these methods we use @Transactional in SecurityConfig!
     @Autowired
     JpaUserDetailsService jpaUserDetailsService;
 
