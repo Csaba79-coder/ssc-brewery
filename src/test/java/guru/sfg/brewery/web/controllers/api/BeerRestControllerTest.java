@@ -1,6 +1,7 @@
 package guru.sfg.brewery.web.controllers.api;
 
 import guru.sfg.brewery.web.controllers.BaseIT;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +33,7 @@ class BeerRestControllerTest extends BaseIT {
                 .andExpect(status().isOk());
     }
 
+    @Disabled
     @Test
     void deleteBeer() throws Exception {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
@@ -60,6 +62,7 @@ class BeerRestControllerTest extends BaseIT {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Disabled
     @Test
     void deleteBeerUrl() throws Exception{
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
@@ -75,5 +78,19 @@ class BeerRestControllerTest extends BaseIT {
         mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
                         .param("apiKey","spring").header("apiSecret", "guruXXXX"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void deleteBeerHttpBasicUserRole() throws Exception{
+        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
+                        .with(httpBasic("user", "password")))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void deleteBeerHttpBasicCustomerRole() throws Exception{
+        mockMvc.perform(delete("/api/v1/beer/97df0c39-90c4-4ae0-b663-453e8e19c311")
+                        .with(httpBasic("scott", "tiger")))
+                .andExpect(status().isForbidden());
     }
 }
